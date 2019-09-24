@@ -112,6 +112,7 @@ all.data.celltype.marker<-Construct.Tissue.marker(TissueNameList = Cell.type,All
 Haitao.table<-read.csv("../Haitao_scRNA_Project/Haitao_Wen_Report_updated/All_biomarkers_from_haitao_seurat_clusters_nFeature_RNA_4000_percentmt_20.csv")
 # create unique marker gene in each cluster and store in list 
 separate.gene<-function(SeuratMarkerTable=Haitao.table,p.adj.cutoff=0.05){
+  SeuratMarkerTable$cluster<-as.character(SeuratMarkerTable$cluster)
   my.cluster.list<-unique(SeuratMarkerTable$cluster)
   my.cluster.gene<-list()
   my.name<-c()
@@ -139,7 +140,7 @@ cal.enrich.table<-function(MySeurat.marker=marker.gene,CellMarker=all.data.cell.
   # cluster name localization 
   marker.name.index<-grep(paste0("^",as.character(cluster.name),"$"),as.character(names(MySeurat.marker)))
   my.gene.list<-MySeurat.marker[[marker.name.index]]
-  all.marker<-unique(as.character(unlist(all.data.cell.marker)))
+  all.marker<-unique(as.character(unlist(CellMarker)))
   N<-length(all.marker)
   selected.gene<-intersect(my.gene.list,all.marker)
   k=length(selected.gene)
